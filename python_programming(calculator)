@@ -1,0 +1,59 @@
+def parse_number(s):
+    try:return float(s)
+    except:return None
+def add(a,b):return a+b
+def subtract(a,b):return a-b
+def multiply(a,b):return a*b
+def divide(a,b):
+    if b==0:return None,"Error: Division by zero"
+    return a/b,None
+def calculate(a,o,b):
+    if o=="+":return add(a,b),None
+    elif o=="-":return subtract(a,b),None
+    elif o=="*" or o.lower()=="x":return multiply(a,b),None
+    elif o=="/":return divide(a,b)
+    return None,"Invalid operator"
+def prompt_number(t):
+    while True:
+        v=parse_number(input(t).strip())
+        if v is None:print("Invalid number");continue
+        return v
+def prompt_operator(t):
+    s={"+","-","*","/","x","X"}
+    while True:
+        o=input(t).strip()
+        if o in s:return o
+        print("Invalid operator")
+def show_menu():
+    print("Simple Calculator")
+    print("1) Calculate")
+    print("2) History")
+    print("3) Clear")
+    print("0) Exit")
+def main():
+    history=[]
+    while True:
+        show_menu()
+        c=input("Choose: ").strip()
+        if c=="1":
+            a=prompt_number("First number: ")
+            o=prompt_operator("Operator: ")
+            b=prompt_number("Second number: ")
+            r,e=calculate(a,o,b)
+            if e:
+                print(e);history.append(f"{a} {o} {b} = {e}")
+            else:
+                op="*" if o.lower()=="x" else o
+                out=f"{a} {op} {b} = {r}"
+                print(out);history.append(out)
+        elif c=="2":
+            if not history:print("No history")
+            else:
+                for i,h in enumerate(history,1):print(i,h)
+        elif c=="3":
+            history.clear();print("History cleared")
+        elif c=="0":
+            print("Exit");break
+        else:print("Invalid")
+if __name__=="__main__":
+    main()
